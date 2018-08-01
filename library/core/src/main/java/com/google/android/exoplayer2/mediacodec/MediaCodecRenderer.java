@@ -761,6 +761,8 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
             adaptiveReconfigurationBytes);
         codec.queueSecureInputBuffer(inputIndex, 0, cryptoInfo, presentationTimeUs, 0);
       } else {
+        if (codecInfo.name.contains("h264") && presentationTimeUs == 5902000)
+            Log.d("VID", "queueInputbuffer: idx="+inputIndex+" size=" + buffer.data.limit() + " pts=" + presentationTimeUs);
         codec.queueInputBuffer(inputIndex, 0, buffer.data.limit(), presentationTimeUs, 0);
       }
       resetInputBuffer();
@@ -1045,6 +1047,8 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
             outputBuffer.limit(outputBufferInfo.offset + outputBufferInfo.size);
           }
           shouldSkipOutputBuffer = shouldSkipOutputBuffer(outputBufferInfo.presentationTimeUs);
+          if (codecInfo.name.contains("h264") && outputBufferInfo.presentationTimeUs == 5902000)
+            Log.d("VID", "dequeueOutputBuffer: idx="+outputIndex+" size=" + outputBufferInfo.size + " pts=" + outputBufferInfo.presentationTimeUs);
         }
       } else if (outputIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED /* (-2) */) {
         processOutputFormat();
@@ -1114,6 +1118,7 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
    */
   private void processOutputFormat() throws ExoPlaybackException {
     MediaFormat format = codec.getOutputFormat();
+    Log.d("VID", "Format changed: "+format);
     if (codecAdaptationWorkaroundMode != ADAPTATION_WORKAROUND_MODE_NEVER
         && format.getInteger(MediaFormat.KEY_WIDTH) == ADAPTATION_WORKAROUND_SLICE_WIDTH_HEIGHT
         && format.getInteger(MediaFormat.KEY_HEIGHT) == ADAPTATION_WORKAROUND_SLICE_WIDTH_HEIGHT) {

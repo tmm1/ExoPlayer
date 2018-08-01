@@ -812,6 +812,8 @@ public class MediaCodecVideoRenderer extends MediaCodecRenderer {
   @TargetApi(21)
   protected void renderOutputBufferV21(
       MediaCodec codec, int index, long presentationTimeUs, long releaseTimeNs) {
+    if (presentationTimeUs == 5902000)
+      Log.d("VID", "renderOutputBuffer("+index+", "+presentationTimeUs+") time="+releaseTimeNs);
     maybeNotifyVideoSizeChanged();
     TraceUtil.beginSection("releaseOutputBuffer");
     codec.releaseOutputBuffer(index, releaseTimeNs);

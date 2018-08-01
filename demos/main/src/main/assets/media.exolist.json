@@ -1,5 +1,14 @@
 [
   {
+    "name": "SHIELD Tests",
+    "samples": [
+      {
+        "name": "h264",
+        "uri": "https://s3.amazonaws.com/tmm1/uk-green-flash.mp4"
+      }
+    ]
+  },
+  {
     "name": "YouTube DASH",
     "samples": [
       {
